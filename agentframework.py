@@ -9,13 +9,20 @@ import random
 class Agent: 
     
 
-    def __init__(self,ia):
+    def __init__(self,ia,environment):
+        self.environment=environment
+        self.store=0
         self._id=ia
         self._x=random.randint(0,99)
         self._y=random.randint(0,99)
         
     def __str__(self):
         return "id="+str(self._id)+", x="+str(self._x)+", y="+str(self._y)
+    
+    def eat(self): # can you make it eat what is left?
+        if self.environment[self._y][self._x] > 10:
+            self.environment[self._y][self._x] -= 10
+            self.store += 10
     
     def move_coord(self,coord,n):
         if random.random()<0.33:
