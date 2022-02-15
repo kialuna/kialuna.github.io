@@ -36,7 +36,7 @@ num_it=10
 dists=[]
 speed=3
 
-# Creating DEM environment
+# Creating DEM environment from txt file 
 reader = csv.reader(open('DEM.txt',newline=''),quoting=csv.QUOTE_NONNUMERIC)
 environment=[]
 for row in reader:
@@ -44,31 +44,28 @@ for row in reader:
     for value in row:
         rowlist.append(value)
     environment.append(rowlist)
-print(environment[0][0])
-plt.imshow(environment)
-plt.show()
 
 
-# Make the agents
+# Make the agents - each linked to an id number and the environment
 for i in range(num_agents):
     agents.append(agentframework.Agent(i,environment))
     
-# Move the agents    
+# Move the agents around and eat grass   
 for j in range(0,num_it,1):
     for i in range(num_agents):
         agents[i].move(speed)
         agents[i].eat()
         
-        
-    plt.xlim(0, 99)
-    plt.ylim(0, 99)
+# For each iteration, plot the agents in the environment         
+    plt.xlim(0, 255)
+    plt.ylim(0, 255)
     plt.imshow(environment)
     for i in range(num_agents):
         plt.scatter(agents[i].getx(),agents[i].gety())
     plt.show()
     
 
-# Calculate distances 
+# Calculate distances between all agents 
 
 for i in range(len(agents)):
     agent_a = agents[i]
@@ -83,5 +80,7 @@ end_tm=time.process_time()
 # 
 print("Run time="+str(end_tm-strt_tm))
 
-for i in range(num_agents):
-    print(agents[i])
+# =============================================================================
+# for i in range(num_agents):
+#     print(agents[i])
+# =============================================================================
