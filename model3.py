@@ -6,7 +6,7 @@ Created on Mon Feb  7 16:42:12 2022
 """
 import random
 import matplotlib.pyplot as plt
-import operator
+import csv
 import time
 import agentframework
 
@@ -36,20 +36,37 @@ num_it=10
 dists=[]
 speed=3
 
+# Creating DEM environment
+reader = csv.reader(open('DEM.txt',newline=''),quoting=csv.QUOTE_NONNUMERIC)
+environment=[]
+for row in reader:
+    rowlist=[]
+    for value in row:
+        rowlist.append(value)
+    environment.append(rowlist)
+print(environment[0][0])
+plt.imshow(environment)
+plt.show()
+
+
 # Make the agents
 for i in range(num_agents):
-    agents.append(agentframework.Agent(i))
+    agents.append(agentframework.Agent(i,environment))
     
 # Move the agents    
 for j in range(0,num_it,1):
     for i in range(num_agents):
         agents[i].move(speed)
-    
+        agents[i].eat()
+        
+        
+    plt.xlim(0, 99)
+    plt.ylim(0, 99)
+    plt.imshow(environment)
     for i in range(num_agents):
-        plt.scatter(agents[i].getx(),agents[i].gety())   
-    plt.xlim(0,99)
-    plt.ylim(0,99)
+        plt.scatter(agents[i].getx(),agents[i].gety())
     plt.show()
+    
 
 # Calculate distances 
 
