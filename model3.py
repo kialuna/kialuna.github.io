@@ -6,13 +6,35 @@ Created on Mon Feb  7 16:42:12 2022
 """
 import random
 import matplotlib.pyplot as plt
-import operator
+import csv
 import time
 import agentframework
+from matplotlib.image import BboxImage
+from matplotlib.transforms import Bbox, TransformedBbox
 
 random.seed(0)
 strt_tm=time.process_time()
 
+sheep = plt.imread('sheep.jpg')
+
+# Create figure
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+def plotImage(xData, yData, im, en): #CITATION: https://stackoverflow.com/questions/25329583/matplotlib-using-image-for-points-on-plot
+    #ax.imshow(en)
+    
+    for x, y in zip(xData, yData):
+        bb = Bbox.from_bounds(x,y,10,15)  
+        bb2 = TransformedBbox(bb,ax.transData)
+        bbox_image = BboxImage(bb2,
+                            norm = None,
+                            origin=None,
+                            clip_on=False)
+
+        bbox_image.set_data(im)
+        ax.add_artist(bbox_image)
+    plt.show()  
 def pyth_dist(agent_a,agent_b):
     """
     Calculates the distance between two x,y coordinates.
@@ -36,22 +58,50 @@ num_it=10
 dists=[]
 speed=3
 
-# Make the agents
+# Creating DEM environment from txt file 
+reader = csv.reader(open('DEM.txt',newline=''),quoting=csv.QUOTE_NONNUMERIC)
+environment=[]
+for row in reader:
+    rowlist=[]
+    for value in row:
+        rowlist.append(value)
+    environment.append(rowlist)
+
+
+# Make the agents - each linked to an id number and the environment
 for i in range(num_agents):
-    agents.append(agentframework.Agent(i))
+    agents.append(agentframework.Agent(i,environment))
     
-# Move the agents    
+# Move the agents around and eat grass   
 for j in range(0,num_it,1):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    #ax.imshow(environment)
+    x=[]
+    y=[]
+    ax.set_xlim(0, 260)
+    ax.set_ylim(0, 260)        
     for i in range(num_agents):
         agents[i].move(speed)
-    
-    for i in range(num_agents):
-        plt.scatter(agents[i].getx(),agents[i].gety())   
-    plt.xlim(0,99)
-    plt.ylim(0,99)
-    plt.show()
+        agents[i].eat()
+        x.append(agents[i].getx())
+        y.append(agents[i].gety())
+    plotImage(x, y, sheep, environment)
+    #plt.show()        
+# For each iteration, plot the agents in the environment         
+# =============================================================================
+#     plt.xlim(0, 255)
+#     plt.ylim(0, 255)
+#     plt.imshow(environment)
+#     for i in range(num_agents):
+#         plt.scatter(agents[i].getx(),agents[i].gety())
+#     plt.show()
+#     
+# =============================================================================
 
-# Calculate distances 
+
+
+# Calculate distances between all agents 
 
 for i in range(len(agents)):
     agent_a = agents[i]
@@ -66,5 +116,16 @@ end_tm=time.process_time()
 # 
 print("Run time="+str(end_tm-strt_tm))
 
+#for i in range(len(agents)):
+
+f=open('environment.csv','w',newline='')
+writer=csv.writer(f,delimiter=',')
+for row in environment:
+    writer.writerow(row)
+f.close()
+
+
+
 for i in range(num_agents):
     print(agents[i])
+
