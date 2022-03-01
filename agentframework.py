@@ -55,16 +55,19 @@ class Agent:
         
     
     def share_with_neighbours(self, neighbourhood):
-        ave=0
-
-        for agents in self.agents:
-            dist = self.distance_between(agent)
+        nb=[] # Blank neighbours list 
+        for agent in self.agents:
+            dist = self.distance_between(agent)            
             if dist <= neighbourhood:
-                sum = self.store + agent.store
-                ave = sum /2
-                self.store = ave
-                agent.store = ave
-                print("sharing " + str(dist) + " " + str(ave))
+                nb.append(1)
+            else: 
+                nb.append(0)
+        portion=self.store/sum(nb)
+        nb=[n*portion for n in nb]
+        print(nb)
+        return(nb)
+            
+        
 
     def distance_between(self, agent):
         return (((self.getx() - agent.getx())**2) + ((self.gety() - agent.gety())**2))**0.5 

@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import csv
 import time
 import agentframework
+import numpy as np
 #from matplotlib.image import BboxImage
 #from matplotlib.transforms import Bbox, TransformedBbox
 
@@ -56,7 +57,7 @@ def pyth_dist(agent_a,agent_b):
 
 agents=[]
 num_agents=10
-num_it=10
+num_it=3
 #dists=[]
 speed=3
 neighbourhood=20
@@ -86,10 +87,16 @@ for j in range(0,num_it,1):
     #ax.set_ylim(0, 260)        
     for i in range(num_agents):
         agents[i].move(speed)
-        agents[i].eat()
-        agents[i].share_with_neighbours(neighbourhood)
         x.append(agents[i].getx())
-        y.append(agents[i].gety())
+        y.append(agents[i].gety())        
+        agents[i].eat()
+    share=[0]*num_agents
+    for i in range(num_agents):
+        store1=agents[i].share_with_neighbours(neighbourhood)
+        share=np.add(share,store1)
+    print(share)
+        
+
     #plotImage(x, y, sheep, environment)
     #plt.show()        
 #For each iteration, plot the agents in the environment         
