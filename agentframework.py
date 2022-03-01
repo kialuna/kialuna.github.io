@@ -9,28 +9,38 @@ import random
 class Agent: 
     
 
-    def __init__(self,ia,environment):
+    def __init__(self,ia,environment,agents):
         self.environment=environment
         self.store=0
         self._id=ia
-        self._x=random.randint(0,99)
-        self._y=random.randint(0,99)
+        self._x=random.randint(0,255)
+        self._y=random.randint(0,255)
+        self.agents=agents
+
         
     def __str__(self):
-        return "id="+str(self._id)+", x="+str(self._x)+", y="+str(self._y)
+        return "id="+str(self._id)+", x="+str(self._x)+", y="+str(self._y)+", store="+str(self.store)
     
-    def eat(self): # can you make it eat what is left?
+    def eat(self): # eating values off DEM 10 at a time
         if self.environment[self._y][self._x] > 10:
             self.environment[self._y][self._x] -= 10
             self.store += 10
+        else:  # If remaining is less than 10, sheep eats all of what is left
+            self.store+=self.environment[self._y][self._x]
+            self.environment[self._y][self._x]=0
+        
+            
+            
+            
+            
     
     def move_coord(self,coord,n):
         if random.random()<0.33:
             return coord
         if random.random()<0.5:
-            coord=(coord+random.randint(0,n))%100
+            coord=(coord+random.randint(0,n))%255
         else:
-            coord=(coord-random.randint(0,n))%100
+            coord=(coord-random.randint(0,n))%255
             
         return coord
     
@@ -39,8 +49,27 @@ class Agent:
         Moves x and y coordinates randomly by n step
 
         """
+        
         self._x=self.move_coord(self._x,n)
         self._y=self.move_coord(self._y,n)
+        
+    
+    def share_with_neighbours(self, neighbourhood):
+        ave=0
+
+        for agents in self.agents:
+            dist = self.distance_between(agent)
+            if dist <= neighbourhood:
+                sum = self.store + agent.store
+                ave = sum /2
+                self.store = ave
+                agent.store = ave
+                print("sharing " + str(dist) + " " + str(ave))
+
+    def distance_between(self, agent):
+        return (((self.getx() - agent.getx())**2) + ((self.gety() - agent.gety())**2))**0.5 
+        
+        
         
         
     def getid(self):
@@ -48,7 +77,7 @@ class Agent:
         Returns coordinate id.
 
         """
-        return self._id
+        return self._id   
     
     def getx(self):
         """
