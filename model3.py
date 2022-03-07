@@ -13,7 +13,7 @@ import numpy as np
 #from matplotlib.image import BboxImage
 #from matplotlib.transforms import Bbox, TransformedBbox
 
-#random.seed(1)
+random.seed(1)
 strt_tm=time.process_time()
 
 #sheep = plt.imread('sheep.jpg')
@@ -56,11 +56,11 @@ def pyth_dist(agent_a,agent_b):
     
 
 agents=[]
-num_agents=10
-num_it=3
+num_agents=4
+num_it=1
 #dists=[]
 speed=3
-neighbourhood=20
+neighbourhood=50
 
 # Creating DEM environment from txt file 
 reader = csv.reader(open('DEM.txt',newline=''),quoting=csv.QUOTE_NONNUMERIC)
@@ -72,10 +72,24 @@ for row in reader:
     environment.append(rowlist)
 
 
+# Test case
+test_coord=[[20,30],[50,40],[150,200],[40,240],[200,100],[250,200]]
+
+
+test='Y'
+
 # Make the agents - each linked to an id number and the environment
-for i in range(num_agents):
-    agents.append(agentframework.Agent(i,environment,agents))
-    
+if test=='Y':
+    for i in range(0,len(test_coord)):
+        agents.append(agentframework.Agent(len(agents),test_coord[i][0], test_coord[i][1],environment,agents))
+        print(agents[i])
+else:   
+    for i in range(num_agents):
+        x=random.randint(0,255)
+        y=random.randint(0,255)
+        agents.append(agentframework.Agent(len(agents),x, y,environment,agents))
+num_agents = len(agents)
+
 # Move the agents around and eat grass   
 for j in range(0,num_it,1):
     #fig = plt.figure()
@@ -90,11 +104,16 @@ for j in range(0,num_it,1):
         x.append(agents[i].getx())
         y.append(agents[i].gety())        
         agents[i].eat()
-    share=[0]*num_agents
+        
+    share=[0]*num_agents # Blank list to add in the share of each agent going to other agents
     for i in range(num_agents):
-        store1=agents[i].share_with_neighbours(neighbourhood)
-        share=np.add(share,store1)
-    print(share)
+        test = agents[i].share_with_neighbours(neighbourhood)
+        print(test)
+        share=np.add(share,test)
+        #print(share)
+    for i in range(num_agents):
+        agents[i].store=share[i]
+    #print(share)
         
 
     #plotImage(x, y, sheep, environment)

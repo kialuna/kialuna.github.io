@@ -9,22 +9,25 @@ import random
 class Agent: 
     
 
-    def __init__(self,ia,environment,agents):
+    def __init__(self,ia,x, y,environment,agents):
         self.environment=environment
         self.store=0
         self._id=ia
-        self._x=random.randint(0,255)
-        self._y=random.randint(0,255)
+        self._x=x
+        self._y=y
+        #self._x=random.randint(0,255)
+        #self._y=random.randint(0,255)
         self.agents=agents
 
         
     def __str__(self):
         return "id="+str(self._id)+", x="+str(self._x)+", y="+str(self._y)+", store="+str(self.store)
     
-    def eat(self): # eating values off DEM 10 at a time
+    def eat(self): # eating values off DEM 
         if self.environment[self._y][self._x] > 10:
-            self.environment[self._y][self._x] -= 10
-            self.store += 10
+            portion=random.randint(0,10)
+            self.environment[self._y][self._x] -= portion
+            self.store += portion
         else:  # If remaining is less than 10, sheep eats all of what is left
             self.store+=self.environment[self._y][self._x]
             self.environment[self._y][self._x]=0
@@ -54,18 +57,18 @@ class Agent:
         self._y=self.move_coord(self._y,n)
         
     
-    def share_with_neighbours(self, neighbourhood):
+    def share_with_neighbours(self, neighbourhood): #Sharing fairly!
         nb=[] # Blank neighbours list 
-        for agent in self.agents:
-            dist = self.distance_between(agent)            
-            if dist <= neighbourhood:
-                nb.append(1)
-            else: 
-                nb.append(0)
-        portion=self.store/sum(nb)
-        nb=[n*portion for n in nb]
-        print(nb)
-        return(nb)
+        for agent in self.agents: # For each other agent
+            dist = self.distance_between(agent)  # Calculate distance to said agent          
+            if dist <= neighbourhood: #if it's in it's neighbourhood
+                nb.append(1) # Add a 1 to 0 list if neighbour or not neighbour 
+            else:  
+                nb.append(0) 
+        portion=self.store/sum(nb) # portion is share of agent's store going to each neighbour and itself
+        nb_share=[n*portion for n in nb] # multiply nb list by portion to get list of portion going to each other agent
+    
+        return(nb_share)
             
         
 
