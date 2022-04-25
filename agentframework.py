@@ -5,64 +5,105 @@ Created on Mon Feb  7 16:16:11 2022
 @author: kia
 """
 import random 
+import myfunctions
+import math
 
 class Agent: 
     
-
-    def __init__(self,ia,x, y,environment,agents):
+    # Initialise agent with starting parameters
+    def __init__(self,ia,x, y,environment,agents,grass,wolf):
         self.environment=environment
         self.store=0
-        self._id=ia
-        self._x=x
-        self._y=y
-        #self._x=random.randint(0,255)
-        #self._y=random.randint(0,255)
+        self.id=ia
+        self.x=x
+        self.y=y
         self.agents=agents
+        self.grass=grass
+        self.status="Alive"
+        self.wolf=wolf
 
         
     def __str__(self):
-        return "id="+str(self._id)+", x="+str(self._x)+", y="+str(self._y)+", store="+str(self.store)
+        return "id="+str(self.id)+", x="+str(self.x)+", y="+str(self.y)+", store="+str(self.store)+", Status="+str(self.status)
     
-    def eat(self): # eating values off DEM 
-        if self.environment[self._y][self._x] > 10:
-            portion=random.randint(0,10)
-            self.environment[self._y][self._x] -= portion
+    
+    # Eat grass
+    def eat(self):
+        # Eat random amount between 0 and 10
+        portion=random.randint(0,10) 
+        # If the portion chosen to eat is greater than the amount of grass left, they just eat the remaining grass
+        if portion > self.grass[self.y][self.x]: 
+            self.grass[self.y][self.x] = 0
+            self.store += self.grass[self.y][self.x]
+        else: 
+            self.grass[self.y][self.x] -= portion
             self.store += portion
-        else:  # If remaining is less than 10, sheep eats all of what is left
-            self.store+=self.environment[self._y][self._x]
-            self.environment[self._y][self._x]=0
-        
+        #If they eat too much, they sick it all up    
+        if self.store>100: 
+            self.store=0
             
             
             
             
-    
-    def move_coord(self,coord,n):
-        if random.random()<0.33:
-            return coord
-        if random.random()<0.5:
-            coord=(coord+random.randint(0,n))%255
-        else:
-            coord=(coord-random.randint(0,n))%255
+    # Move randomly by some amount less than 'speed'
+    def rand_move(self,speed):
+        # A third of the time they don't move at all 
+        if random.random()>0.33:
+            self.x+=random.randint(-speed,speed)
+            self.y+=random.randint(-speed,speed)
+            self.x,self.y=myfunctions.constrain(self)
+   
             
-        return coord
-    
-    def move(self,n):
+    # Running from the wolf 
+    def flee_move(self,speed):
+        # Find direction of wolf in radians 
+        wolf_dir=myfunctions.direction(self,self.wolf)     
+        # Find relative amounts of x and y to move by to run away from wolf 
+        self.x-= round(math.cos(wolf_dir)*speed)
+        self.y-=round(math.sin(wolf_dir)*speed)
+        # If out of the fields constrains, gets put back in 
+        self.x,self.y=myfunctions.constrain(self)
+                
+    def move(self,eat_speed,run_speed):
         """
-        Moves x and y coordinates randomly by n step
+        Chooses whether to move normally or flee from wolf
+        
+        Parameters: n is the speed of movement for normal move()
 
         """
+
+        wolf_dist=myfunctions.distance(self,self.wolf)
+        # If wolf 50 cells or less distance from agent, agent flees
+        if wolf_dist>50:
+            self.rand_move(eat_speed)
+        else:
+            self.flee_move(run_speed)
+            
         
-        self._x=self.move_coord(self._x,n)
-        self._y=self.move_coord(self._y,n)
+        
         
     
-    def share_with_neighbours(self, neighbourhood): #Sharing fairly!
+    def share_with_neighbours(self, neighbourhood): 
+        """
+        Function which calculates for a given agent how much to share with 
+        every other agent.
+
+        Parameters
+        ----------
+        neighbourhood : Distance below which agent will share with other agents.
+
+        Returns
+        -------
+        List of how much to share with each other agent. List shares the same index as agents list, 
+        so that first item is amount shared with agent[1] etc. 
+
+        """
+    
         nb=[] # Blank neighbours list 
         for agent in self.agents: # For each other agent
-            dist = self.distance_between(agent)  # Calculate distance to said agent          
+            dist = myfunctions.distance(self,agent)  # Calculate distance to said agent          
             if dist <= neighbourhood: #if it's in it's neighbourhood
-                nb.append(1) # Add a 1 to 0 list if neighbour or not neighbour 
+                nb.append(1) # Add a 1 or 0 list if neighbour or not neighbour 
             else:  
                 nb.append(0) 
         portion=self.store/sum(nb) # portion is share of agent's store going to each neighbour and itself
@@ -71,31 +112,3 @@ class Agent:
         return(nb_share)
             
         
-
-    def distance_between(self, agent):
-        return (((self.getx() - agent.getx())**2) + ((self.gety() - agent.gety())**2))**0.5 
-        
-        
-        
-        
-    def getid(self):
-        """
-        Returns coordinate id.
-
-        """
-        return self._id   
-    
-    def getx(self):
-        """
-        Returns x coordinate.
-
-        """
-        return self._x
-    
-    def gety(self):
-        """
-        Returns y coordinate
-
-        """
-        return self._y
-    
