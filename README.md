@@ -1,3 +1,5 @@
+This is an edit.
+
 
 # Assignment 1: Agent Based Modelling 
 
@@ -19,9 +21,6 @@ The parameters of the model include:
 - The running speed of the sheep when fleeing
 - The wolf's speed
 - The 'neighbourhood' -  the distance within which sheep will share their store with other sheep 
-
-
-
 
 
 ## Contents 
