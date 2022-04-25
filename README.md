@@ -34,13 +34,13 @@ The parameters of the model include:
 
 -[Some extra functions](https://github.com/kialuna/kialuna.github.io/blob/main/myfunctions.py)
 
-## Some Examples
+## Examples
 Some examples that use speeds of 3,5 and 6 for eating sheep, fleeing sheep and the wolf, respectively. The neighbourhood limit is 50, the number of iterations is 100, and random locations are used. 
 
 
-| 200 Sheep, 100 Iterations | Column 2 Header | Column 3 Header |
+| 20 Sheep | 80 Sheep | 200 Sheep |
 | --------------- | --------------- | --------------- |
-| ![](200sheep50it.gif) | ![](200sheep50it.gif) | ![](200sheep50it.gif) |
+| ![](20sheep100it.gif) | ![](80sheep100it.gif) | ![](200sheep100it.gif) |
 
 
 ## Issues and further development
