@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Feb  7 16:42:12 2022
+Assignment 1. 
 
-@author: kia
+Main model. 
+
+Student no: 201578549
+    
 """
 import matplotlib
 matplotlib.use('TkAgg')

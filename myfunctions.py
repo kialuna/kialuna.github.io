@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Feb 15 11:22:40 2022
+Assignment 1. 
 
-@author: kia
+Extra functions. . 
+
+Student no: 201578549
+    
 """
 
 

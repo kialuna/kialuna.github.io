@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar 14 17:23:17 2022
+Assignment 1. 
 
-@author: kia
+The wolf's framework. 
+
+Student no: 201578549
+    
 """
 
 #import random

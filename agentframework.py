@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Feb  7 16:16:11 2022
+Assignment 1. 
 
-@author: kia
+Sheep's framework. 
+
+Student no: 201578549
+    
 """
 import random 
 import myfunctions
