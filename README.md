@@ -26,13 +26,13 @@ The parameters of the model include:
 
 ## Contents 
 
--[The main model](https://github.com/kialuna/kialuna.github.io/blob/main/model3.py) - this is the one you want to run!
+-[The main model](model3.py) - this is the one you want to run!
 
--[The sheep's framework](https://github.com/kialuna/kialuna.github.io/blob/main/agentframework.py)
+-[The sheep's framework](agentframework.py)
 
--[The wolf's framework](https://github.com/kialuna/kialuna.github.io/blob/main/wolf_framework.py)
+-[The wolf's framework](wolf_framework.py)
 
--[Some extra functions](https://github.com/kialuna/kialuna.github.io/blob/main/myfunctions.py)
+-[Some extra functions](myfunctions.py)
 
 ## Examples
 Some examples that use speeds of 3,5 and 6 for eating sheep, fleeing sheep and the wolf, respectively. The neighbourhood limit is 50, the number of iterations is 100, and random locations are used. 
@@ -52,4 +52,4 @@ Some examples that use speeds of 3,5 and 6 for eating sheep, fleeing sheep and t
 
 ## Licence 
 
-LICENSE
+[Here!](LICENSE)
