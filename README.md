@@ -22,10 +22,20 @@ The parameters of the model include:
 
 
 
-## Contents 
-[hh](https://github.com/kialuna/kialuna.github.io/blob/main/agentframework.py)
 
-## Instructions
+
+## Contents 
+
+-[The main model](https://github.com/kialuna/kialuna.github.io/blob/main/model3.py) - this is the one you want to run!
+
+-[The sheep's framework](https://github.com/kialuna/kialuna.github.io/blob/main/agentframework.py)
+
+-[The wolf's framework](https://github.com/kialuna/kialuna.github.io/blob/main/wolf_framework.py)
+
+-[Some extra functions](https://github.com/kialuna/kialuna.github.io/blob/main/myfunctions.py)
+
+
+
 
 ## Known Issues 
 
