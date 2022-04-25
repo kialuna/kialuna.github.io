@@ -51,3 +51,5 @@ Some examples that use speeds of 3,5 and 6 for eating sheep, fleeing sheep and t
 - User interactivity could be added to the GUI rather than using the command line
 
 ## Licence 
+
+LICENSE
