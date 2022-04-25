@@ -1,5 +1,3 @@
-This is an edit.
-
 
 # Assignment 1: Agent Based Modelling 
 
